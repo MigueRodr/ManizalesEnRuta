@@ -7,8 +7,13 @@ import { GoogleGenAI } from "@google/genai";
 // Load environment variables
 dotenv.config();
 
+// Fallback to loading .env.example if process.env.GEMINI_API_KEY is missing
+if (!process.env.GEMINI_API_KEY) {
+  dotenv.config({ path: path.join(process.cwd(), ".env.example") });
+}
+
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 
@@ -21,6 +26,7 @@ function getAiClient(): GoogleGenAI {
     if (!key) {
       throw new Error("La clave GEMINI_API_KEY no está configurada. Por favor configúrala en Settings > Secrets en AI Studio.");
     }
+    console.log(`[Gemini] Initializing client. Key prefix: ${key.substring(0, 6)}...`);
     aiClient = new GoogleGenAI({
       apiKey: key,
       httpOptions: {
