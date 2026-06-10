@@ -15,7 +15,7 @@ export default function LoginScreen({ onLoginSuccess, speakText }: LoginProps) {
     e.preventDefault();
     if (!nombre.trim()) return;
     
-    speakText(`Bienvenido de nuevo, ${nombre}. Iniciando sesión en ManaRuta.`);
+    speakText(`Bienvenido de nuevo, ${nombre}. Iniciando sesión en Manizales en Ruta.`);
     onLoginSuccess({
       nombre: nombre.trim(),
       cedula: cedula.trim() || "10.123.456",
@@ -25,7 +25,7 @@ export default function LoginScreen({ onLoginSuccess, speakText }: LoginProps) {
   };
 
   const handleGuest = () => {
-    speakText("Iniciando sesión como invitado. Bienvenidos a ManaRuta.");
+    speakText("Iniciando sesión como invitado. Bienvenidos a Manizales en Ruta.");
     onLoginSuccess({
       nombre: "Invitado de Manizales",
       cedula: "No registrada",
@@ -35,12 +35,12 @@ export default function LoginScreen({ onLoginSuccess, speakText }: LoginProps) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen pt-12 pb-8 px-5 animate-fade-in relative">
+    <div className="flex flex-col items-center justify-start h-full min-h-full overflow-y-auto pt-12 pb-8 px-5 animate-fade-in relative">
       {/* Logo Section */}
       <div className="flex flex-col items-center text-center w-full space-y-4 mb-8">
         <div className="w-44 h-44 flex items-center justify-center p-4 bg-white rounded-2xl shadow-md border border-slate-100">
           <img
-            alt="Logo ManaRuta"
+            alt="Logo Manizales en Ruta"
             className="w-full h-full object-contain"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO1txVRzbaXNiDQBqeaGEpHMewLbAj5omWzrdV_JlFal_z5PVJOBrwH7cSEQlZiD_f8kSpiP7Ss2EQh6qtcSqBklg1bQHdi9wgo-FmFi0Dpj5C1I348f73UKKP-z8EyRnwEKT7TNZsHSlCY8lt8zSv2tL09ykjLeGzX52j3N_ymKLdF4y5uvkXBrM4ovnM0c5KF7c0vrx-z-2C6PpOWB8lu3BxFCcXmC1m8KffKULKrJKfhZf-2jGmCZJjSNxjjkQBdIX3d7ZikQQ"
           />

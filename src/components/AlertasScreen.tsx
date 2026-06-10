@@ -30,7 +30,7 @@ export default function AlertasScreen({
   };
 
   return (
-    <div className="flex flex-col min-h-screen pb-24 animate-fade-in text-[#0b1c30] bg-slate-50">
+    <div className="flex flex-col h-full min-h-full pb-24 animate-fade-in text-[#0b1c30] bg-slate-50">
       {/* Top App Bar Header */}
       <header className="bg-white sticky top-0 z-50 flex justify-between items-center px-5 h-[64px] border-b border-slate-100 shadow-sm">
         <div className="flex items-center gap-3">

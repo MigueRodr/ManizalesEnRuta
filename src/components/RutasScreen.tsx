@@ -38,7 +38,7 @@ export default function RutasScreen({
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 text-[#0b1c30] animate-fade-in pb-24">
+    <div className="flex flex-col h-full min-h-full bg-slate-50 text-[#0b1c30] animate-fade-in pb-24">
       {/* Top App Bar */}
       <header className="flex justify-between items-center px-5 h-[64px] sticky top-0 bg-white z-50 shadow-sm">
         <div className="flex items-center gap-4">

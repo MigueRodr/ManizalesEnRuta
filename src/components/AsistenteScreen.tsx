@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { UserProfile, ChatMessage } from "../types";
 import { SUGGESTED_CHIPS } from "../data";
 import { 
-  ArrowLeft, Mic, Send, Bot, RefreshCw, ChevronRight, Bus, Play, CheckCircle 
+  ArrowLeft, Mic, Send, HelpCircle, RefreshCw, ChevronRight, Bus, Play, CheckCircle 
 } from "lucide-react";
 
 interface AsistenteProps {
@@ -22,7 +22,7 @@ export default function AsistenteScreen({
     {
       id: "w1",
       sender: "ai",
-      text: `¡Hola Juan! Soy tu asistente de movilidad para Manizales. 🗺️🚌\n¿En qué puedo ayudarte hoy?`,
+      text: `¡Hola Juan! Soy tu Chat de Ayuda de movilidad para Manizales en Ruta. 🗺️🚌\nPregúntame sobre qué empresas de transporte operan, las tarifas oficiales 2026 (bus básico $3.000, buseta ejecutiva $3.250, colectivo $3.350, cable aéreo $3.250) o cómo llegar a Chipre, El Cable, el Centro y los Termales.\n¿En qué te puedo asesorar hoy?`,
       timestamp: "10:40 AM"
     }
   ]);
@@ -69,9 +69,13 @@ export default function AsistenteScreen({
 
       const data = await response.json();
       
+      if (!response.ok) {
+        throw new Error(data.error || `Error del servidor (Código ${response.status})`);
+      }
+
       setIsTyping(false);
       
-      const aiResponse = data.text || "Disculpa, experimenté un inconveniente al consultar las rutas. ¿Puedes volver a intentar?";
+      const aiResponse = data.text || "Disculpa, no obtuve respuesta del asistente virtual. Por favor intenta de nuevo.";
       
       // Auto-speak the response of Gemini if vocal readers enabled
       speakText(aiResponse);
@@ -86,15 +90,18 @@ export default function AsistenteScreen({
         }
       ]);
 
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
       setIsTyping(false);
+      const errorMsg = e.message || "Lo lamento, no logré conectarme al servidor del transporte. Por favor, verifica tu conexión de datos de internet.";
       setMessages((prev) => [
         ...prev,
         {
           id: `ai-err-${Date.now()}`,
           sender: "ai",
-          text: "Lo lamento, no logré conectarme al servidor del transporte. Por favor, verifica tu conexión de datos de internet.",
+          text: errorMsg.includes("GEMINI_API_KEY") 
+            ? `⚠️ Clave GEMINI_API_KEY no configurada: Para usar el asistente IA, debes registrar tu clave de Gemini API en la configuración del servidor y en tu panel de Secrets.`
+            : `⚠️ Error de conexión: ${errorMsg}`,
           timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
         }
       ]);
@@ -117,21 +124,21 @@ export default function AsistenteScreen({
   };
 
   const handleClear = () => {
-    speakText("Limpiando chat.");
+    speakText("Reiniciando el chat de ayuda.");
     setMessages([
       {
         id: "w1",
         sender: "ai",
-        text: `¡Hola Juan! Cuenta conmigo para resolver cualquier duda de rutas de buses, Cable Aéreo o clima. ¿Qué viaje planeas?`,
+        text: `¡Hola Juan! Soy tu Chat de Ayuda de Manizales en Ruta. Puedo resolver al instante tus consultas sobre empresas de buseta (Socobuses, Unitrans, etc.), las tarifas oficiales para 2026 (bus básico $3.000, buseta ejecutiva $3.250, colectivo $3.350, cable aéreo $3.250), o guiarte a destinos emblemáticos como Chipre, el Centro y los Termales. ¿En qué te ayudo? 🗺️`,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
       }
     ]);
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 relative pb-[140px] animate-fade-in text-[#0b1c30]">
+    <div className="flex flex-col h-full w-full bg-slate-50 relative pb-0 animate-fade-in text-[#0b1c30] overflow-hidden">
       {/* Top App Bar Header */}
-      <header className="bg-white sticky top-0 z-50 shadow-sm flex justify-between items-center px-5 h-[64px] border-b border-slate-100">
+      <header className="bg-white z-50 shadow-sm flex justify-between items-center px-5 h-[64px] border-b border-slate-100 shrink-0">
         <div className="flex items-center gap-4">
           <button 
             type="button"
@@ -140,7 +147,7 @@ export default function AsistenteScreen({
           >
             <ArrowLeft className="w-6 h-6 text-blue-900" />
           </button>
-          <span className="font-extrabold text-xl text-blue-900">Asistente IA</span>
+          <span className="font-extrabold text-xl text-blue-900">Chat de Ayuda</span>
         </div>
         
         <button 
@@ -153,14 +160,14 @@ export default function AsistenteScreen({
       </header>
 
       {/* Chat Messages scroll area */}
-      <main className="flex-1 overflow-y-auto px-5 py-6 space-y-4">
+      <main className="flex-grow overflow-y-auto px-5 py-6 space-y-4 min-h-0">
         {messages.map((m) => {
           const isAi = m.sender === "ai";
           return (
             <div key={m.id} className={`flex items-start gap-3 ${isAi ? "justify-start" : "justify-end"}`}>
               {isAi && (
-                <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-900 flex items-center justify-center shrink-0 border border-blue-200">
-                  <Bot className="w-5 h-5 fill-blue-900 text-white" />
+                <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-900 flex items-center justify-center shrink-0 border border-blue-100 shadow-sm">
+                  <HelpCircle className="w-5 h-5" />
                 </div>
               )}
               
@@ -200,8 +207,8 @@ export default function AsistenteScreen({
         {/* AI Thinking/Typing State */}
         {isTyping && (
           <div className="flex items-start gap-3 animate-pulse">
-            <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-900 flex items-center justify-center shrink-0 border border-blue-200">
-              <Bot className="w-5 h-5 fill-blue-900 text-white" />
+            <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-900 flex items-center justify-center shrink-0 border border-blue-100 shadow-sm">
+              <HelpCircle className="w-5 h-5" />
             </div>
             <div className="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1">
               <div className="w-2.5 h-2.5 bg-blue-900 rounded-full animate-bounce" style={{ animationDelay: "0s" }}></div>
@@ -215,7 +222,7 @@ export default function AsistenteScreen({
       </main>
 
       {/* Bottom Input & Suggestions Area */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 max-w-md w-full bg-white border-t border-slate-150 shadow-md z-40 border-x border-slate-100">
+      <div className="shrink-0 w-full bg-white border-t border-slate-150 shadow-md z-40">
         
         {/* Suggestion Chips */}
         <div className="flex gap-2.5 px-5 py-3 overflow-x-auto hide-scrollbar border-b border-slate-100">

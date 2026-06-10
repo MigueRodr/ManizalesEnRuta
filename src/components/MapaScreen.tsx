@@ -31,9 +31,9 @@ export default function MapaScreen({ profile, speakText, onBack }: MapaProps) {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 overflow-hidden relative pb-[80px]">
+    <div className="flex flex-col h-full min-h-full bg-slate-50 overflow-hidden relative pb-[80px] md:pb-0">
       {/* Top App Bar Header */}
-      <header className="bg-white/95 backdrop-blur shadow-sm flex justify-between items-center px-5 h-[64px] max-w-md w-full z-50 fixed top-0 left-1/2 -translate-x-1/2 border-x border-slate-100">
+      <header className="bg-white/95 backdrop-blur shadow-sm flex justify-between items-center px-5 h-[64px] w-full z-50 sticky top-0 border-b border-slate-150">
         <div className="flex items-center gap-4">
           <button 
             onClick={onBack}
@@ -67,7 +67,7 @@ export default function MapaScreen({ profile, speakText, onBack }: MapaProps) {
       </header>
 
       {/* Map Interactive Area */}
-      <main className="flex-grow w-full h-screen relative pt-[64px] z-0">
+      <main className="flex-grow w-full h-full relative z-0">
         {/* Topographic Background Map */}
         <div className="absolute inset-0 w-full h-full bg-slate-200">
           <img 

@@ -46,18 +46,17 @@ export default function ExperienceScreen({
     speakText("Guardando tus preferencias de accesibilidad.");
     
     setTimeout(() => {
-      onUpdateSettings(localSettings);
       setSavingStatus("done");
       speakText("Configuración guardada de forma exitosa.");
       
       setTimeout(() => {
-        onBack();
+        onUpdateSettings(localSettings);
       }, 1000);
     }, 1200);
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 text-[#0b1c30] animate-fade-in pb-24">
+    <div className="flex flex-col h-full min-h-full bg-slate-50 text-[#0b1c30] animate-fade-in pb-24">
       {/* Top AppBar */}
       <header className="bg-white sticky top-0 z-40 flex justify-between items-center px-5 h-[64px] border-b border-slate-100 shadow-sm">
         <button 
@@ -78,7 +77,7 @@ export default function ExperienceScreen({
             ¿Cómo podemos hacer tu experiencia más cómoda?
           </h2>
           <p className="text-lg text-slate-500 font-medium mt-2">
-            Elige lo que necesitas para navegar mejor en ManaRuta.
+            Elige lo que necesitas para navegar mejor en Manizales en Ruta.
           </p>
         </section>
 
@@ -94,8 +93,8 @@ export default function ExperienceScreen({
             }`}
           >
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full bg-blue-100 text-blue-900 flex items-center justify-center">
-                <Type className="w-7 h-7" />
+              <div className="w-14 h-14 rounded-full bg-blue-100 text-blue-900 flex items-center justify-center font-bold text-xl">
+                <span>TT</span>
               </div>
               <div>
                 <h3 className="font-bold text-lg text-slate-900">Letra más grande</h3>
@@ -103,12 +102,17 @@ export default function ExperienceScreen({
               </div>
             </div>
             <div className="flex items-center">
-              <input 
-                type="checkbox" 
-                checked={localSettings.letraGrande}
-                readOnly
-                className="h-7 w-7 rounded-md border-2 border-slate-300 text-blue-700 focus:ring-blue-700 pointer-events-none"
-              />
+              <div className={`h-7 w-7 rounded-lg border-2 flex items-center justify-center transition-colors ${
+                localSettings.letraGrande 
+                  ? "border-blue-900 bg-blue-900 text-white" 
+                  : "border-slate-300 bg-white"
+              }`}>
+                {localSettings.letraGrande && (
+                  <svg className="w-4 h-4 stroke-[3] stroke-white" viewBox="0 0 24 24" fill="none">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                )}
+              </div>
             </div>
           </button>
 
@@ -130,12 +134,17 @@ export default function ExperienceScreen({
               </div>
             </div>
             <div className="flex items-center">
-              <input 
-                type="checkbox" 
-                checked={localSettings.altoContraste}
-                readOnly
-                className="h-7 w-7 rounded-md border-2 border-slate-300 text-blue-700 focus:ring-blue-700 pointer-events-none"
-              />
+              <div className={`h-7 w-7 rounded-lg border-2 flex items-center justify-center transition-colors ${
+                localSettings.altoContraste 
+                  ? "border-blue-900 bg-blue-900 text-white" 
+                  : "border-slate-300 bg-white"
+              }`}>
+                {localSettings.altoContraste && (
+                  <svg className="w-4 h-4 stroke-[3] stroke-white" viewBox="0 0 24 24" fill="none">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                )}
+              </div>
             </div>
           </button>
 
@@ -157,12 +166,17 @@ export default function ExperienceScreen({
               </div>
             </div>
             <div className="flex items-center">
-              <input 
-                type="checkbox" 
-                checked={localSettings.lecturaVoz}
-                readOnly
-                className="h-7 w-7 rounded-md border-2 border-slate-300 text-blue-700 focus:ring-blue-700 pointer-events-none"
-              />
+              <div className={`h-7 w-7 rounded-lg border-2 flex items-center justify-center transition-colors ${
+                localSettings.lecturaVoz 
+                  ? "border-blue-900 bg-blue-900 text-white" 
+                  : "border-slate-300 bg-white"
+              }`}>
+                {localSettings.lecturaVoz && (
+                  <svg className="w-4 h-4 stroke-[3] stroke-white" viewBox="0 0 24 24" fill="none">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                )}
+              </div>
             </div>
           </button>
 
@@ -180,16 +194,21 @@ export default function ExperienceScreen({
               </div>
               <div>
                 <h3 className="font-bold text-lg text-slate-900">Botones más grandes</h3>
-                <p className="text-[15px] font-medium text-slate-500">Facilita la navegación rápida</p>
+                <p className="text-[15px] font-medium text-slate-500">Facilita la navegación</p>
               </div>
             </div>
             <div className="flex items-center">
-              <input 
-                type="checkbox" 
-                checked={localSettings.botonesGrandes}
-                readOnly
-                className="h-7 w-7 rounded-md border-2 border-slate-300 text-blue-700 focus:ring-blue-700 pointer-events-none"
-              />
+              <div className={`h-7 w-7 rounded-lg border-2 flex items-center justify-center transition-colors ${
+                localSettings.botonesGrandes 
+                  ? "border-blue-900 bg-blue-900 text-white" 
+                  : "border-slate-300 bg-white"
+              }`}>
+                {localSettings.botonesGrandes && (
+                  <svg className="w-4 h-4 stroke-[3] stroke-white" viewBox="0 0 24 24" fill="none">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                )}
+              </div>
             </div>
           </button>
 

@@ -98,8 +98,8 @@ export const INITIAL_ALERTS: AlertItem[] = [
 ];
 
 export const SUGGESTED_CHIPS = [
-  "¿Qué buses pasan cerca?",
-  "Estado del Cable Aéreo",
-  "Alertas de clima hoy",
-  "¿Cómo viajo a Chipre?"
+  "Tarifas oficiales 💳",
+  "¿Qué empresas de bus operan? 🚌",
+  "¿Cómo llego a los Termales? 🌋",
+  "¿Cómo ir al Centro o Catedral? ⛪"
 ];

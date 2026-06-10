@@ -41,7 +41,7 @@ export default function HomeScreen({
   };
 
   return (
-    <div className="flex flex-col min-h-screen pb-16 animate-fade-in text-[#0b1c30] relative">
+    <div className="flex flex-col h-full min-h-full pb-16 animate-fade-in text-[#0b1c30] relative">
       {/* Search and Greeting Banner */}
       <section className="px-5 mt-6 mb-8">
         <h1 className="text-4xl font-black text-blue-900 tracking-tight leading-tight">
@@ -201,25 +201,23 @@ export default function HomeScreen({
             className="w-full h-full object-cover" 
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8k9iiK4N2cv-_Dv7W1231f6lV2B3WOcW6CysINOdH4DktSkDtkWj4G9YFwYb1iGrG44lHfPwct0Qs__DN58y7yuFGvMCIxUY3u8MWz-sobBQOAjJ8n29CYjWK_hvlBqrQnNjheSIDOROt-ppEXWqcEhatz92gIup4kkvoc-KaFouodqYuCn_jA8YoPTEp4Pm_hFHq4b65LuaCVnnwCAkQfpJye0et5o_mhvcd34dPuMZpHwHE1o-EMSgPtzVHb8IUDcWCLDmQNOg"
           />
-          <div className="absolute bottom-4 left-4 right-4 flex gap-2">
-            <div className="bg-white/95 backdrop-blur px-4 py-3 rounded-2xl flex items-center gap-2 shadow-md border border-slate-100">
-              <MapPin className="text-blue-900 w-5 h-5 flex-shrink-0" />
-              <span className="font-bold text-sm text-slate-900">Mi ubicación: Palermo</span>
+          <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
+            <div className="bg-white/95 backdrop-blur px-3.5 py-2.5 rounded-2xl flex items-center gap-2 shadow-md border border-slate-100">
+              <MapPin className="text-blue-900 w-4 h-4 flex-shrink-0" />
+              <span className="font-bold text-xs text-slate-900">Mi ubicación: Palermo</span>
             </div>
+            
+            <button 
+              type="button"
+              onClick={handleShareLocation}
+              className="bg-amber-400 hover:bg-amber-300 text-blue-950 font-extrabold px-3.5 py-2.5 rounded-2xl flex items-center gap-2 shadow-md border border-white active:scale-95 transition-all cursor-pointer text-xs shrink-0"
+            >
+              <Share2 className="w-4 h-4 text-blue-950 shrink-0" />
+              <span>{copied ? "¡Enlace copiado!" : "Compartir ubicación"}</span>
+            </button>
           </div>
         </div>
       </section>
-
-      {/* Floating Action Button for Sharing location */}
-      <div className="absolute bottom-24 right-5 z-40">
-        <button 
-          onClick={handleShareLocation}
-          className="h-16 px-5 bg-amber-400 hover:bg-amber-300 text-blue-950 rounded-2xl shadow-xl border border-white flex items-center gap-3 active:scale-95 transition-all cursor-pointer font-bold"
-        >
-          <Share2 className="w-6 h-6 text-blue-950" />
-          <span>{copied ? "¡Enlace copiado!" : "Compartir ubicación"}</span>
-        </button>
-      </div>
     </div>
   );
 }

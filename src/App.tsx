@@ -13,7 +13,7 @@ import AsistenteScreen from "./components/AsistenteScreen";
 import PerfilScreen from "./components/PerfilScreen";
 
 import { 
-  Home, Bus, Bell, User, Cpu, Settings, LogOut, Moon, Sun, Menu, X, Landmark, Compass, Sparkles, Star, AlertCircle
+  Home, Bus, Bell, User, HelpCircle, Settings, LogOut, Moon, Sun, Menu, X, Landmark, Compass, Sparkles, Star, AlertCircle
 } from "lucide-react";
 
 export default function App() {
@@ -42,6 +42,7 @@ export default function App() {
   
   const [preSelectedDest, setPreSelectedDest] = useState<string>("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isOnboarded, setIsOnboarded] = useState(false);
 
   // Web Speech synthesis helper
   const speakText = (text: string) => {
@@ -62,7 +63,7 @@ export default function App() {
   useEffect(() => {
     if (profile.isLoggedIn) {
       if (activeTab === "inicio") {
-        speakText(`Pantalla de Inicio. Hola Juan, bienvenido a ManaRuta. ¿A dónde deseas ir hoy?`);
+        speakText(`Pantalla de Inicio. Hola Juan, bienvenido a Manizales en Ruta. ¿A dónde deseas ir hoy?`);
       } else if (activeTab === "rutas") {
         speakText(`Planeador de viaje. Selecciona origen y destino.`);
       } else if (activeTab === "mapa") {
@@ -70,7 +71,7 @@ export default function App() {
       } else if (activeTab === "alertas") {
         speakText(`Canal de Alertas y Clima.`);
       } else if (activeTab === "asistente") {
-        speakText(`Hablar con Asistente Inteligente.`);
+        speakText(`Hablar con el Chat de Ayuda.`);
       } else if (activeTab === "perfil") {
         speakText(`Perfil de Juan Pérez. Revisa tus estadísticas y favoritos.`);
       } else if (activeTab === "experiencia") {
@@ -132,10 +133,14 @@ export default function App() {
   // If user is not logged in, render the login panel
   if (!profile.isLoggedIn) {
     return (
-      <div className="min-h-screen w-full md:bg-slate-900/95 flex justify-center items-start">
-        <div className={`w-full max-w-md min-h-screen bg-slate-50 md:shadow-[0_0_50px_rgba(0,0,0,0.3)] md:border-x md:border-slate-800 relative flex flex-col ${containerClasses}`}>
+      <div className="min-h-screen w-full md:bg-[#081524] flex justify-center items-center px-4">
+        <div className={`w-full max-w-md md:h-[650px] md:rounded-3xl md:overflow-hidden md:shadow-[0_20px_60px_rgba(0,0,0,0.5)] bg-slate-50 relative flex flex-col ${containerClasses}`}>
           <LoginScreen 
-            onLoginSuccess={(prof) => setProfile(prof)} 
+            onLoginSuccess={(prof) => {
+              setProfile(prof);
+              setActiveTab("experiencia");
+              setIsOnboarded(false);
+            }} 
             speakText={speakText} 
           />
         </div>
@@ -144,23 +149,122 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen w-full md:bg-slate-900/95 flex justify-center items-start">
-      <div className={`w-full max-w-md min-h-screen bg-slate-50 md:shadow-[0_0_50px_rgba(0,0,0,0.3)] md:border-x md:border-slate-800 relative flex flex-col ${containerClasses}`}>
+    <div className="min-h-screen w-full md:bg-[#081524] flex justify-center items-center md:py-8 md:px-4">
+      <div className={`w-full max-w-md md:max-w-5xl md:rounded-3xl h-screen md:h-[800px] md:max-h-[85vh] md:min-h-0 bg-slate-50 md:shadow-[0_25px_60px_rgba(0,0,0,0.55)] md:border md:border-slate-800 relative flex flex-col md:flex-row overflow-hidden ${containerClasses}`}>
+        
+        {/* Persistent Left Sidebar: ONLY visible on desktop/PC (md and up). */}
+        <aside className="hidden md:flex md:w-64 lg:w-72 bg-white flex-col justify-between p-6 border-r border-slate-200 sticky top-0 h-full shrink-0 z-40">
+          <div className="space-y-6">
+            <div className="flex items-center gap-2 border-b border-slate-100 pb-4">
+              <img 
+                alt="Logo Manizales en Ruta" 
+                className="h-8 w-auto bg-blue-900 p-0.5 rounded-lg border border-slate-100" 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeLJdYvCN8DcbwZjHPnFtQCThlyJrrcSDc8bR0WPFphMJUufrmzXAX_WcHWj8jqy2SYyVBW7MbYQ6LY03iO6XA6JNcds2ND5bU0r8sA81Gmoeo3KPMKiv22fN9PJvWSk48TWnwTV9L1jY3D9MjEm8MuzamElJuR5hI2SJn3uXJCypmLg7EOKJ9bqmFZA4msHm3719U3DcwrFnaJUs8AX23YfvK-lTnjiEFzg4K03yRCnGsKaH-N5pGQJlLB8CR4MS63t6SuALt71U" 
+              />
+              <span className="font-extrabold text-blue-900 tracking-tight text-lg">Manizales en Ruta</span>
+            </div>
+
+            <nav className="flex flex-col space-y-1">
+              <button 
+                onClick={() => setActiveTab("inicio")}
+                className={`w-full h-11 px-4 rounded-xl font-bold text-md flex items-center gap-3 active:scale-95 transition-all text-left cursor-pointer ${
+                  activeTab === "inicio" ? "bg-blue-900 text-white" : "text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                <Home className="w-5 h-5" />
+                <span>Inicio / Dashboard</span>
+              </button>
+
+              <button 
+                onClick={() => setActiveTab("rutas")}
+                className={`w-full h-11 px-4 rounded-xl font-bold text-md flex items-center gap-3 active:scale-95 transition-all text-left cursor-pointer ${
+                  activeTab === "rutas" ? "bg-blue-900 text-white" : "text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                <Bus className="w-5 h-5" />
+                <span>Planear viaje</span>
+              </button>
+
+              <button 
+                onClick={() => setActiveTab("mapa")}
+                className={`w-full h-11 px-4 rounded-xl font-bold text-md flex items-center gap-3 active:scale-95 transition-all text-left cursor-pointer ${
+                  activeTab === "mapa" ? "bg-blue-900 text-white" : "text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                <Compass className="w-5 h-5" />
+                <span>Mapa de Rutas</span>
+              </button>
+
+              <button 
+                onClick={() => setActiveTab("alertas")}
+                className={`w-full h-11 px-4 rounded-xl font-bold text-md flex items-center gap-3 active:scale-95 transition-all text-left cursor-pointer ${
+                  activeTab === "alertas" ? "bg-blue-900 text-white" : "text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                <Bell className="w-5 h-5" />
+                <span>Alertas y clima</span>
+              </button>
+
+              <button 
+                onClick={() => setActiveTab("asistente")}
+                className={`w-full h-11 px-4 rounded-xl font-bold text-md flex items-center gap-3 active:scale-95 transition-all text-left cursor-pointer ${
+                  activeTab === "asistente" ? "bg-blue-900 text-white" : "text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                <HelpCircle className="w-5 h-5" />
+                <span>Ayuda</span>
+              </button>
+
+              <button 
+                onClick={() => setActiveTab("perfil")}
+                className={`w-full h-11 px-4 rounded-xl font-bold text-md flex items-center gap-3 active:scale-95 transition-all text-left cursor-pointer ${
+                  activeTab === "perfil" ? "bg-blue-900 text-white" : "text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                <User className="w-5 h-5" />
+                <span>Mi Perfil</span>
+              </button>
+
+              <button 
+                onClick={() => setActiveTab("experiencia")}
+                className={`w-full h-11 px-4 rounded-xl font-bold text-md flex items-center gap-3 active:scale-95 transition-all text-left cursor-pointer ${
+                  activeTab === "experiencia" ? "bg-blue-900 text-white" : "text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                <Settings className="w-5 h-5" />
+                <span>Tu experiencia</span>
+              </button>
+            </nav>
+          </div>
+
+          <button 
+            onClick={handleLogout}
+            className="w-full h-12 border border-red-200 hover:bg-red-550 hover:bg-red-50 text-red-650 font-bold px-4 rounded-xl flex items-center gap-3 active:scale-95 transition-all text-left cursor-pointer"
+          >
+            <LogOut className="w-5 h-5" />
+            <span>Cerrar sesión</span>
+          </button>
+        </aside>
+
+        {/* Content Panel Area */}
+        <div className={`flex-grow flex flex-col relative w-full h-full pb-[80px] md:pb-0 ${
+          activeTab === "asistente" || activeTab === "mapa" ? "overflow-hidden" : "overflow-y-auto"
+        }`}>
       
-      {/* Top Application header drawer */}
-      {activeTab !== "experiencia" && activeTab !== "rutas" && activeTab !== "mapa" && activeTab !== "asistente" && (
-        <header className="bg-blue-900 text-white flex justify-between items-center px-5 h-[64px] shadow-md z-45 sticky top-0 border-b-2 border-amber-400">
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={handleToggleSidebar}
-              aria-label="Menú principal" 
-              className="w-10 h-10 flex items-center justify-center hover:bg-white/20 active:scale-95 duration-100 rounded-full cursor-pointer"
-            >
-              <Menu className="w-6 h-6 text-white" />
-            </button>
+        {/* Top Application header drawer */}
+        {activeTab !== "experiencia" && activeTab !== "rutas" && activeTab !== "mapa" && activeTab !== "asistente" && (
+          <header className="bg-blue-900 text-white flex justify-between items-center px-5 h-[64px] shadow-md z-45 sticky top-0 border-b-2 border-amber-400">
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={handleToggleSidebar}
+                aria-label="Menú principal" 
+                className="w-10 h-10 flex items-center justify-center hover:bg-white/20 active:scale-95 duration-100 rounded-full cursor-pointer md:hidden"
+              >
+                <Menu className="w-6 h-6 text-white" />
+              </button>
             <div className="flex items-center gap-2">
               <img 
-                alt="Logo ManaRuta" 
+                alt="Logo Manizales en Ruta" 
                 className="h-8 w-auto bg-white p-0.5 rounded-lg border border-slate-100" 
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeLJdYvCN8DcbwZjHPnFtQCThlyJrrcSDc8bR0WPFphMJUufrmzXAX_WcHWj8jqy2SYyVBW7MbYQ6LY03iO6XA6JNcds2ND5bU0r8sA81Gmoeo3KPMKiv22fN9PJvWSk48TWnwTV9L1jY3D9MjEm8MuzamElJuR5hI2SJn3uXJCypmLg7EOKJ9bqmFZA4msHm3719U3DcwrFnaJUs8AX23YfvK-lTnjiEFzg4K03yRCnGsKaH-N5pGQJlLB8CR4MS63t6SuALt71U" 
               />
@@ -185,7 +289,9 @@ export default function App() {
       )}
 
       {/* Main Pages router content */}
-      <main className="flex-grow">
+      <main className={`flex-grow flex flex-col min-h-0 ${
+        activeTab === "asistente" || activeTab === "mapa" ? "h-full" : ""
+      }`}>
         {activeTab === "inicio" && (
           <HomeScreen 
             profile={profile} 
@@ -245,12 +351,20 @@ export default function App() {
         {activeTab === "experiencia" && (
           <ExperienceScreen 
             settings={accessSettings}
-            onUpdateSettings={(updated) => setAccessSettings(updated)}
-            onBack={() => setActiveTab("inicio")}
+            onUpdateSettings={(updated) => {
+              setAccessSettings(updated);
+              setIsOnboarded(true);
+              setActiveTab("inicio");
+            }}
+            onBack={() => {
+              setIsOnboarded(true);
+              setActiveTab("inicio");
+            }}
             speakText={speakText}
           />
         )}
       </main>
+      </div> {/* Close Content Panel Area */}
 
       {/* Sidebar Overlay Drawer */}
       {isSidebarOpen && (
@@ -272,7 +386,7 @@ export default function App() {
                     className="h-8 w-auto bg-blue-900 p-0.5 rounded-lg" 
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeLJdYvCN8DcbwZjHPnFtQCThlyJrrcSDc8bR0WPFphMJUufrmzXAX_WcHWj8jqy2SYyVBW7MbYQ6LY03iO6XA6JNcds2ND5bU0r8sA81Gmoeo3KPMKiv22fN9PJvWSk48TWnwTV9L1jY3D9MjEm8MuzamElJuR5hI2SJn3uXJCypmLg7EOKJ9bqmFZA4msHm3719U3DcwrFnaJUs8AX23YfvK-lTnjiEFzg4K03yRCnGsKaH-N5pGQJlLB8CR4MS63t6SuALt71U" 
                   />
-                  <span className="font-extrabold text-blue-900 tracking-tight text-lg">ManaRuta</span>
+                  <span className="font-extrabold text-blue-900 tracking-tight text-lg">Manizales en Ruta</span>
                 </div>
                 <button 
                   onClick={() => setIsSidebarOpen(false)}
@@ -330,8 +444,8 @@ export default function App() {
                     activeTab === "asistente" ? "bg-blue-50 text-blue-900" : "text-slate-650 hover:bg-slate-50"
                   }`}
                 >
-                  <Cpu className="w-5 h-5 animate-pulse" />
-                  <span>Asistente IA</span>
+                  <HelpCircle className="w-5 h-5 animate-pulse" />
+                  <span>Ayuda</span>
                 </button>
 
                 <button 
@@ -370,7 +484,7 @@ export default function App() {
 
       {/* Floating Bottom Navigation Bar */}
       {activeTab !== "experiencia" && activeTab !== "asistente" && (
-        <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 max-w-md w-full h-[80px] bg-white flex justify-around items-center px-4 pb-2 z-40 border-t border-slate-150 shadow-[0px_-4px_12px_rgba(0,0,0,0.06)] border-x border-slate-100">
+        <nav className="md:hidden fixed bottom-0 left-1/2 -translate-x-1/2 max-w-md w-full h-[80px] bg-white flex justify-around items-center px-4 pb-2 z-40 border-t border-slate-150 shadow-[0px_-4px_12px_rgba(0,0,0,0.06)] border-x border-slate-100">
           {/* Inicio Tab */}
           <button 
             onClick={() => setActiveTab("inicio")}
@@ -422,8 +536,8 @@ export default function App() {
               activeTab === "asistente" ? "text-blue-900 text-shadow-sm scale-110" : "text-slate-400 hover:text-blue-900"
             }`}
           >
-            <Cpu className="w-6 h-6" />
-            <span className="text-[10px] font-bold mt-1">Asistente</span>
+            <HelpCircle className="w-6 h-6" />
+            <span className="text-[10px] font-bold mt-1">Ayuda</span>
           </button>
 
           {/* Profile Tab */}
