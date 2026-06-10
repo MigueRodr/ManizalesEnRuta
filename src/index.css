@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Atkinson Hyperlegible Next", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Custom Styles for ManaRuta accessibility, matching the specs precisely */
+body {
+  font-family: var(--font-sans);
+  background-color: #f8f9ff;
+  color: #0b1c30;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Letra Más Grande (Accessibility toggle) */
+.letra-grande-activa {
+  font-size: 1.15rem !important;
+}
+.letra-grande-activa h1 {
+  font-size: 2.25rem !important;
+  line-height: 2.75rem !important;
+}
+.letra-grande-activa h2 {
+  font-size: 1.85rem !important;
+  line-height: 2.25rem !important;
+}
+.letra-grande-activa p, 
+.letra-grande-activa span, 
+.letra-grande-activa div, 
+.letra-grande-activa label, 
+.letra-grande-activa button, 
+.letra-grande-activa input {
+  font-size: 1.15rem !important;
+  line-height: 1.65rem !important;
+}
+
+/* Alto Contraste (Accessibility toggle) */
+.alto-contraste-activo {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+.alto-contraste-activo body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+.alto-contraste-activo header {
+  background-color: #1e40af !important;
+  border-bottom: 3px solid #facc15 !important;
+}
+.alto-contraste-activo .bg-white,
+.alto-contraste-activo .bg-background,
+.alto-contraste-activo .bg-surface,
+.alto-contraste-activo .bg-surface-container,
+.alto-contraste-activo .bg-surface-container-low,
+.alto-contraste-activo .bg-surface-container-lowest,
+.alto-contraste-activo .bg-surface-container-high,
+.alto-contraste-activo .bg-surface-container-highest {
+  background-color: #111111 !important;
+  border: 2px solid #ffffff !important;
+  color: #ffffff !important;
+}
+.alto-contraste-activo p,
+.alto-contraste-activo h1,
+.alto-contraste-activo h2,
+.alto-contraste-activo h3,
+.alto-contraste-activo h4,
+.alto-contraste-activo span,
+.alto-contraste-activo input {
+  color: #ffffff !important;
+}
+.alto-contraste-activo .text-primary {
+  color: #facc15 !important; /* Pure yellow accent for high focus */
+}
+.alto-contraste-activo .text-on-surface-variant {
+  color: #e5eeff !important;
+}
+.alto-contraste-activo .bg-primary {
+  background-color: #facc15 !important;
+  color: #000000 !important;
+}
+.alto-contraste-activo .bg-primary p,
+.alto-contraste-activo .bg-primary h1,
+.alto-contraste-activo .bg-primary h2,
+.alto-contraste-activo .bg-primary h3,
+.alto-contraste-activo .bg-primary h4,
+.alto-contraste-activo .bg-primary span {
+  color: #000000 !important;
+}
+.alto-contraste-activo button {
+  border: 2px solid #ffffff !important;
+}
+
+/* Botones Más Grandes (Accessibility toggle) */
+.botones-grandes-activa button,
+.botones-grandes-activa .touch-target {
+  padding-top: 1.25rem !important;
+  padding-bottom: 1.25rem !important;
+  min-height: 72px !important;
+}
+
+/* Hide scrollbars but keep functionality */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

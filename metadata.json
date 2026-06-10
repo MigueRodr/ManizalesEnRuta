@@ -1,0 +1,6 @@
+{
+  "name": "Manizales en Ruta",
+  "description": "Aplicación de movilidad urbana y transporte inteligente para la ciudad de Manizales. Cuenta con mapas en vivo, rutas de buses, estado del Cable Aéreo, alertas de clima y tráfico, y un asistente de movilidad interactivo con IA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
